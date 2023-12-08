@@ -135,44 +135,42 @@ jobs:
         shell: python
         run: |
           import requests
-          from bs4 import BeautifulSoup
-          import re
-          import zipfile
-          import os
-          import urllib.request
+from bs4 import BeautifulSoup
+import re
+import zipfile
+import os
+import urllib.request
 
-          arch = "${{ matrix.arch }}"
+arch = "${{ matrix.arch }}"
+release_type = "WIS"
 
-          #release_type_map = {"retail": "Retail", "release preview": "RP", "insider slow": "WIS", "insider fast": "WIF"}
-          #release_type_map = "WIS"
-          #release_type = release_type_map["${{ matrix.release_type }}"] if "${{ matrix.release_type }}" != "" else "Retail"	
-          release_type = "WIS"
-          res = requests.post("https://store.rg-adguard.net/api/GetFiles", f"type=CategoryId&url=858014f3-3934-4abe-8078-4aa193e74ca8&ring={release_type}&lang=en-US", headers={	
-              "content-type": "application/x-www-form-urlencoded"	
-          }, verify=False) # source site has expired cert
-          
-          html = BeautifulSoup(res.content, "lxml")
+res = requests.post("https://store.rg-adguard.net/api/GetFiles", f"type=CategoryId&url=858014f3-3934-4abe-8078-4aa193e74ca8&ring={release_type}&lang=en-US", headers={
+    "content-type": "application/x-www-form-urlencoded"
+}, verify=False)  # source site has expired cert
 
-          a = html.find("a", string=re.compile(f"Microsoft\.UI\.Xaml\..*_{arch}_.*\.appx"))
-          link = "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/251bbb12-dbfc-4820-b0ff-c4dfa70ffb09?P1=1702077667&P2=404&P3=2&P4=LHtQbC5WMdy27a41ghu7IwjHKNe0HQYEqMvS2p7lLKDl7iQyUfABIF1tVRhx9FCjt2VOCxO4MzTXVUGo4Wk45w%3d%3d"["href"]
-          print(f"downloading link: {link}", flush=True)
-          out_file = "xaml.appx"
-          if not os.path.isfile(out_file):
-              urllib.request.urlretrieve(link, out_file)
+html = BeautifulSoup(res.content, "lxml")
 
-          a = html.find("a", string=re.compile(f"Microsoft\.VCLibs\..*_{arch}_.*\.appx"))
-          link = "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/28edaebf-8019-4844-ba32-8ab019bc9391?P1=1702077593&P2=404&P3=2&P4=f7zXpT7YkIRncrPGU3nHHofkIGtvTyCLrID5lhS5h8Tg6kDZCKyi8pLld6XQpNgSRkEGQXbTqoMEUOwwqfYjMA%3d%3d"["href"]
-          print(f"downloading link: {link}", flush=True)
-          out_file = "vclibs.appx"
-          if not os.path.isfile(out_file):
-              urllib.request.urlretrieve(link, out_file)
+# Function to download a file
+def download_file(file_name, regex_pattern):
+    a = html.find("a", string=re.compile(regex_pattern))
+    if a is not None:
+        link = a["href"]
+        print(f"downloading link: {link}", flush=True)
+        out_file = file_name
+        if not os.path.isfile(out_file):
+            urllib.request.urlretrieve(link, out_file)
+    else:
+        print(f"No link found for {file_name}")
 
-          a = html.find("a", string=re.compile("MicrosoftCorporationII\.WindowsSubsystemForAndroid_.*\.msixbundle"))
-          link = "http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/f2b59894-efdf-4dde-8b2c-23012b4b3cf6?P1=1702105713&P2=404&P3=2&P4=cAEVLznNcDs9F8LMr%2b9UmTmzGNuNl27%2bN3wkY4%2f%2f5E3gDUY837DOgq8GYUJo7SKyu%2foGFo4LnImyYJCtfDHhaQ%3d%3d"["href"]
-          print(f"downloading link: {link}", flush=True)
-          out_file = "wsa.zip"
-          if not os.path.isfile(out_file):
-              urllib.request.urlretrieve(link, out_file)
+# Download Microsoft.UI.Xaml
+download_file("xaml.appx", f"Microsoft\.UI\.Xaml\..*_{arch}_.*\.appx")
+
+# Download Microsoft.VCLibs
+download_file("vclibs.appx", f"Microsoft\.VCLibs\..*_{arch}_.*\.appx")
+
+# Download Windows Subsystem for Android
+download_file("wsa.zip", "MicrosoftCorporationII\.WindowsSubsystemForAndroid_.*\.msixbundle")
+
 
           zip_name = ""
           with zipfile.ZipFile(out_file) as zip:
