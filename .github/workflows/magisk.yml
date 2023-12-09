@@ -325,8 +325,8 @@ jobs:
         run: |
           rm -rf ${{ matrix.arch }}/{system,vendor}.img
           #wget -q https://sourceforge.net/projects/blissos-dev/files/waydroid/lineage/lineage-18.1/Lineage-OS-18.1-waydroid_x86_64-202111291420-foss-sd-hd-ex_ax86-vaapi_gles-aep.zip/download -O los.zip
-          wget -q https://sourceforge.net/projects/waydroid/files/images/system/lineage/waydroid_x86_64/lineage-18.1-20230422-GAPPS-waydroid_x86_64-system.zip/download -O system.zip
-          wget -q https://sourceforge.net/projects/waydroid/files/images/vendor/waydroid_x86_64/lineage-18.1-20230422-MAINLINE-waydroid_x86_64-vendor.zip/download -O vendor.zip
+          wget -q https://sourceforge.net/projects/waydroid/files/images/system/lineage/waydroid_x86_64/lineage-18.1-20231202-GAPPS-waydroid_x86_64-system.zip/download -O system.zip
+          wget -q https://sourceforge.net/projects/waydroid/files/images/vendor/waydroid_x86_64/lineage-18.1-20231202-MAINLINE-waydroid_x86_64-vendor.zip/download -O vendor.zip
           7z x system.zip -o${{ matrix.arch }}/
           7z x vendor.zip -o${{ matrix.arch }}/
       - name: Extract GApps and expand images
