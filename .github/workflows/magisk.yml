@@ -25,13 +25,13 @@ on:
       magisk_apk:
         description: "Magisk version"
         required: true
-        default: "26.1"
+        default: "26.4"
         type: choice
         options:
         - 24.1
         - 24.2
         - 24.3
-        - 25.2
+        - 26.4
         - 26.1
         - canary
         - delta
@@ -102,7 +102,7 @@ jobs:
                 matrix.magisk_apk = ["delta"];
                 break;
               default:
-                matrix.magisk_apk = ["25.2"];
+                matrix.magisk_apk = ["26.4"];
                 break;
             }
             let gapps_variant = "${{ github.event.inputs.gapps_variant }}"
@@ -239,8 +239,8 @@ jobs:
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v24.2/Magisk-v24.2.apk"
           if magisk_apk == "24.3":
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v24.3/Magisk-v24.3.apk"
-          if magisk_apk == "25.2":
-              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v25.2/Magisk-v25.2.apk"
+          if magisk_apk == "26.4":
+              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v26.4/Magisk-v26.4.apk"
           if magisk_apk == "26.1":
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v26.1/Magisk-v26.1.apk"
           if magisk_apk == "canary":
