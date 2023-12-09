@@ -154,7 +154,6 @@ jobs:
           html = BeautifulSoup(res.content, "lxml")
 
           a = html.find("a", string=re.compile(f"Microsoft\.UI\.Xaml\..*_{arch}_.*\.appx"))
-          link = a["href"]
           link = (
           "https://storage.googleapis.com/bucket65464/"
           "Microsoft.UI.Xaml.2.8_8.2310.30001.0_x64__8wekyb3d8bbwe.Appx"
@@ -165,7 +164,6 @@ jobs:
               urllib.request.urlretrieve(link, out_file)
 
           a = html.find("a", string=re.compile(f"Microsoft\.VCLibs\..*_{arch}_.*\.appx"))
-          link = a["href"]
           link = (
           "https://storage.googleapis.com/bucket65464/"
           "Microsoft.VCLibs.140.00_14.0.32530.0_x64__8wekyb3d8bbwe.Appx"
@@ -177,7 +175,6 @@ jobs:
               urllib.request.urlretrieve(link, out_file)
 
           a = html.find("a", string=re.compile("MicrosoftCorporationII\.WindowsSubsystemForAndroid_.*\.msixbundle"))
-          link = a["href"]
           link = (
           "https://storage.googleapis.com/bucket65464/"
           "MicrosoftCorporationII.WindowsSubsystemForAndroid_2310.40000.2.0_neutral_~_8wekyb3d8bbwe.Msixbundle"
