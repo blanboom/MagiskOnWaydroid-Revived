@@ -155,21 +155,34 @@ jobs:
 
           a = html.find("a", string=re.compile(f"Microsoft\.UI\.Xaml\..*_{arch}_.*\.appx"))
           link = a["href"]
-          print(f"downloading link: {"http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/251bbb12-dbfc-4820-b0ff-c4dfa70ffb09?P1=1702077667&P2=404&P3=2&P4=LHtQbC5WMdy27a41ghu7IwjHKNe0HQYEqMvS2p7lLKDl7iQyUfABIF1tVRhx9FCjt2VOCxO4MzTXVUGo4Wk45w%3d%3d"}", flush=True)
+          link = (
+          "https://storage.googleapis.com/bucket65464/"
+          "Microsoft.UI.Xaml.2.8_8.2310.30001.0_x64__8wekyb3d8bbwe.Appx"
+          )
+          print(f"downloading link: {link}", flush=True)
           out_file = "xaml.appx"
           if not os.path.isfile(out_file):
               urllib.request.urlretrieve(link, out_file)
 
           a = html.find("a", string=re.compile(f"Microsoft\.VCLibs\..*_{arch}_.*\.appx"))
           link = a["href"]
-          print(f"downloading link: {"http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/28edaebf-8019-4844-ba32-8ab019bc9391?P1=1702077593&P2=404&P3=2&P4=f7zXpT7YkIRncrPGU3nHHofkIGtvTyCLrID5lhS5h8Tg6kDZCKyi8pLld6XQpNgSRkEGQXbTqoMEUOwwqfYjMA%3d%3d"}", flush=True)
+          link = (
+          "https://storage.googleapis.com/bucket65464/"
+          "Microsoft.VCLibs.140.00_14.0.32530.0_x64__8wekyb3d8bbwe.Appx"
+          )
+          print(f"downloading link: {link}", flush=True)
           out_file = "vclibs.appx"
+          
           if not os.path.isfile(out_file):
               urllib.request.urlretrieve(link, out_file)
 
           a = html.find("a", string=re.compile("MicrosoftCorporationII\.WindowsSubsystemForAndroid_.*\.msixbundle"))
           link = a["href"]
-          print(f"downloading link: {http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/f2b59894-efdf-4dde-8b2c-23012b4b3cf6?P1=1702105713&P2=404&P3=2&P4=cAEVLznNcDs9F8LMr%2b9UmTmzGNuNl27%2bN3wkY4%2f%2f5E3gDUY837DOgq8GYUJo7SKyu%2foGFo4LnImyYJCtfDHhaQ%3d%3d}", flush=True)
+          link = (
+          "https://storage.googleapis.com/bucket65464/"
+          "MicrosoftCorporationII.WindowsSubsystemForAndroid_2310.40000.2.0_neutral_~_8wekyb3d8bbwe.Msixbundle"
+          )
+          print(f"downloading link: {link}", flush=True)
           out_file = "wsa.zip"
           if not os.path.isfile(out_file):
               urllib.request.urlretrieve(link, out_file)
