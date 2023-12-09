@@ -92,8 +92,8 @@ jobs:
             }
             let magisk_apk = "${{ github.event.inputs.magisk_apk }}"
             switch ( magisk_apk ) {
-              case "25.2":
-                matrix.magisk_apk = ["25.2"];
+              case "26.4":
+                matrix.magisk_apk = ["26.4"];
                 break;
               case "canary":
                 matrix.magisk_apk = ["canary"];
@@ -232,7 +232,7 @@ jobs:
           magisk_apk = """${{ github.event.inputs.magisk_apk }}"""
           
           if not magisk_apk:
-              magisk_apk = "26.1"
+              magisk_apk = "26.4"
           if magisk_apk == "24.1":
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v24.1/Magisk-v24.1.apk"
           if magisk_apk == "24.2":
@@ -242,7 +242,7 @@ jobs:
           if magisk_apk == "26.4":
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v26.4/Magisk-v26.4.apk"
           if magisk_apk == "26.1":
-              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v26.1/Magisk-v26.1.apk"
+              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v26.4/Magisk-v26.4.apk"
           if magisk_apk == "canary":
               magisk_apk = "https://raw.githubusercontent.com/topjohnwu/magisk-files/canary/app-debug.apk"
           if magisk_apk == "delta":
