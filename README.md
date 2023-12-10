@@ -1,17 +1,17 @@
-# Gapps + Magisk Waydroid
+# Magisk Delta on Waydroid - build prerooted images!
 
-![Screenshot from 2022-05-31 21-33-25](https://user-images.githubusercontent.com/28628331/171199638-1260676c-8d0c-4c56-9ca6-65950ed5374a.png)
-![image](https://github.com/pagkly/MagiskOnWaydroid/assets/28628331/29a2b8f5-d9a6-41bb-ae82-8cba412c0bd0)
+![installedmagisk](https://https://storage.googleapis.com/bucket65464/installedmagisk.png)
+![magiskmodules](https://storage.googleapis.com/bucket65464/magiskmodules.png)
 
 **Follow [installation](#installation-guide) to init modified images.**
 
-Unable to test latest build in Arch due to recent waydroid update showing this [issue](https://github.com/waydroid/waydroid/issues/282), hoping somebody can provide feedback if 25.2 is working in Ubuntu or Arch.
+Note: This is forked https://github.com/pagkly/MagiskOnWaydroid, but It has been and abandoned and building doesn't work anymore. So I fixed it and we can build prerooted images again! Please use Magisk Delta, normal Magisk is very buggy, but the option is still there, If you really want to.
 
-Forked [MagiskOnWSA](https://github.com/LSPosed/MagiskOnWSA) and modified to install Magisk and OpenGapps (pico) replacing FOSS apps in [BlissOS/LineageOS 18.1 dev image (Android 11)](https://sourceforge.net/projects/blissos-dev/files/waydroid/lineage/lineage-18.1/)
+Forked [MagiskOnWSA](https://github.com/LSPosed/MagiskOnWSA) and modified to install Magisk Delta and OpenGapps (pico) replacing stock Google Apps.
 
 Most OpenGApps variants works except for aroma (aroma does not support x86_64, please use super instead)
 
-Tested in ArchLinux, Fedora.
+Tested in ArchLinux, Fedora. Archlinux users, please use linux-xanmod-anbox kernel, or It will not work at all!
 
 More in [Waydroid Telegram](https://t.me/WayDroid)
 
@@ -32,21 +32,15 @@ More in [Waydroid Telegram](https://t.me/WayDroid)
     - [Detach](https://github.com/Magisk-Modules-Repo/Detach) (detach app from play store)
     
     
-    Also, **not all Magisk version guaranteed to work**.
+**Available Magisk versions**.
     
-    Versions that work are build 24001 < x < 24102 and 24301. This is due to a change in how Magisk load the binaries during booting somewhere in commit between build v24102 to v24103 and present in v24.2, 2420x builds; and a change in magiskpolicy applet in 24301. I added stable magisk versions to choose from in workflow so that they can be tested. If you run the workflow and install the img properly and magisk icon not shown when booting the first time, that means Magisk is not setup properly.
-    
-     For now, latest working is 24.1 and 24.3 and thus, do not update magisk apk.
+    Magisk 26.4
+    Magisk 26.4 - canary (Normal Magisk just for testing purposes)
+    Magisk Delta latest (Highly recommended)
 
-2. **Restart waydroid container twice after additional setup in Magisk.**
-   
-   First restart usually have a bug where the ethernet connection would fail to connect to the internet. Second restart should fix them.
-   
-   See [Installation Guide](#installation-guide)
     
-
 ## Cleaning Previous Image
-Run this command below to clean previous image such as Waydroid 10 or before installing new Waydroid 11 image or when updating to new Magisk.
+Run this command below to clean previous images, before installing new Waydroid image or when updating to new Magisk.
 
 **Warning: You will lose all your data, apps, settings of previous Android installation.**
 
@@ -55,70 +49,37 @@ Run this command below to clean previous image such as Waydroid 10 or before ins
 waydroid session stop
 sudo waydroid container stop
 sudo systemctl stop waydroid-container.service
-sudo umount -l /var/lib/waydroid/{data,rootfs}
-sudo umount /usr/share/waydroid-extra/images/{system,vendor}.img
 sudo rm -rf /var/lib/waydroid /home/.waydroid ~/waydroid ~/.share/waydroid ~/.local/share/applications/*aydroid* ~/.local/share/waydroid
-sudo rm -rf /usr/share/waydroid-extra/images/*
+sudo rm -rf /etc/waydroid-extra/images/*
 ```
   
 ## Installation Guide
-1. Install waydroid dev image on your Linux Distro.
-    
-   - e.g. In Arch Linux with AUR + yay 
 
-      ```shell
-      # install one of the kernel that supports ashmem,binder
-      # sudo pacman -S linux-mainline-anbox #(5.17-rc)
-      # sudo pacman -S linux-zen #(tested on 5.16 - 5.17rc; 5.17.1 not working)
-      # sudo pacman -S linux-xanmod-anbox #(5.17.12>; the one Im using right now)
-      sudo pacman -Syuu
-      yay -S waydroid-image-dev
-      ```
-
-1. Go to the **Action** tab in your forked repo
-    ![Action Tab](https://docs.github.com/assets/images/help/repository/actions-tab.png)
-1. In the left sidebar, click the **Build WSA** workflow.
-    ![Workflow](https://docs.github.com/assets/images/actions-select-workflow.png)
-1. Above the list of workflow runs, select **Run workflow**
-    ![Run Workflow](https://docs.github.com/assets/images/actions-workflow-dispatch.png)
-1. Input the download link of Magisk and select the [OpenGApps variant](https://github.com/opengapps/opengapps/wiki#variants) (none is no OpenGApps) you like, select the root solution (none means no root) and click **Run workflow**
-    ![Run Workflow](https://docs.github.com/assets/images/actions-manually-run-workflow.png)
-1. Wait for the action to complete and download the artifact
-    ![Download](https://docs.github.com/assets/images/help/repository/artifact-drop-down-updated.png)
-1. Unzip the artifact
+1. Fork this repo and go to the **Action** tab.
+2. In the left sidebar, click the **Modify Waydroid** workflow.
+3. Above the list of workflow runs, select **Run workflow**
+4. Select Magisk version and gapps version and the selecz **Run workflow**
+5. Wait for the action to complete and download the artifact
+6. Unzip the artifact
     - The size shown in the webpage is uncompressed size and the zip you download will be compressed. So the size of the zip will be much less than the size shown in the webpage.
-1. Copy system.img and vendor.img to ~~/usr/share/waydroid-extras/images~~ /var/lib/waydroid/images and init the new img.
+7. Copy system.img and vendor.img to /etc/waydroid-extra/images/ and init the new img.
     ```shell    
     # Remove original img and copy magisk img
     sudo rm -rf /var/lib/waydroid/images/system.img
     sudo rm -rf /var/lib/waydroid/images/vendor.img
-    sudo cp system.img /var/lib/waydroid/images/system.img
-    sudo cp vendor.img /var/lib/waydroid/images/vendor.img
+    sudo cp system.img /etc/waydroid-extra/images/system.img
+    sudo cp vendor.img /etc/waydroid-extra/image/vendor.img
 
     # Initialize new images
-    sudo waydroid init
+    sudo waydroid init -f
     # Restart waydroid lxc container
     sudo systemctl restart waydroid-container.service
-    waydroid session start &
-    # Start Waydroid UI
-    waydroid show-full-ui
+    waydroid session start or waydroid show-full-ui
     ```
-1. After additional setup in magisk, reboot and restart container twice (refer to [Bugs](#bugs) as to why)
-    ```shell
+8. After additional setup in magisk delta, please go in install section and select direct install to system partition and install it!
     waydroid stop session
-    
-    # First container restart
-    sudo systemctl restart waydroid-container.service
-    waydroid session start #(wait until successfully booted)
-    waydroid session stop
-    
-    # Second container restart
-    sudo systemctl restart waydroid-container.service
-    waydroid session start #(wait until successfully booted)
-    waydroid show-full-ui
-    ```
-    
-    
+  ![directinstall](https://storage.googleapis.com/bucket65464/directinstallsystem.png)
+      
 ## Additional FAQ
 
 - Why the size of the zip does not match the one shown?
@@ -141,9 +102,6 @@ sudo rm -rf /usr/share/waydroid-extra/images/*
     adb push module.zip /data/local/tmp
     adb shell su -c magisk --install-module /data/local/tmp/module.zip
     ```
-- Can I use Magisk 23.0 stable or lower version?
-
-    No. Magisk has bugs preventing itself running on WSA. Magisk 24+ has fixed them. So you must use Magisk 24 or higher version.
 
 - Github Action script is updated, how can I synchronize it?
 
@@ -163,5 +121,3 @@ sudo rm -rf /usr/share/waydroid-extra/images/*
 - [MagiskOnEmu](https://github.com/HuskyDG/MagiskOnEmu)
 - [Project Kokoro](https://github.com/supremegamers/kokoro) - Magisk module remount implementation
 
-## Notes
-- [4.2 Android in LXC](https://stgraber.org/2013/12/23/lxc-1-0-some-more-advanced-container-usage/)
