@@ -77,7 +77,6 @@ sudo rm -rf /etc/waydroid-extra/images/*
     waydroid session start or waydroid show-full-ui
     ```
 8. After additional setup in magisk delta, please go in install section and select direct install to system partition and install it!
-    waydroid stop session
   ![directinstall](https://storage.googleapis.com/bucket65464/directinstallsystem.png)
       
 ## Additional FAQ
