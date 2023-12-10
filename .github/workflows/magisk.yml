@@ -28,11 +28,7 @@ on:
         default: "delta"
         type: choice
         options:
-        - 24.1
-        - 24.2
-        - 24.3
         - 26.4
-        - 26.1
         - canary
         - delta
       gapps_variant:
@@ -233,22 +229,12 @@ jobs:
           
           if not magisk_apk:
               magisk_apk = "delta"
-          if magisk_apk == "24.1":
-              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v24.1/Magisk-v24.1.apk"
-          if magisk_apk == "24.2":
-              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v24.2/Magisk-v24.2.apk"
-          if magisk_apk == "24.3":
-              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v24.3/Magisk-v24.3.apk"
           if magisk_apk == "26.4":
-              magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v26.4/Magisk-v26.4.apk"
-          if magisk_apk == "26.1":
               magisk_apk = "https://github.com/topjohnwu/Magisk/releases/download/v26.4/Magisk-v26.4.apk"
           if magisk_apk == "canary":
               magisk_apk = "https://raw.githubusercontent.com/topjohnwu/magisk-files/canary/app-debug.apk"
           if magisk_apk == "delta":
               magisk_apk = "https://huskydg.github.io/magisk-files/app-release.apk"
-          if magisk_apk == "stable" or magisk_apk == "beta":
-              magisk_apk = json.loads(requests.get(f"https://github.com/topjohnwu/magisk-files/raw/master/{magisk_apk}.json").content)['magisk']['link']
           
 
           out_file = "magisk.zip"
@@ -325,8 +311,8 @@ jobs:
         run: |
           rm -rf ${{ matrix.arch }}/{system,vendor}.img
           #wget -q https://sourceforge.net/projects/blissos-dev/files/waydroid/lineage/lineage-18.1/Lineage-OS-18.1-waydroid_x86_64-202111291420-foss-sd-hd-ex_ax86-vaapi_gles-aep.zip/download -O los.zip
-          wget -q https://storage.googleapis.com/bucket65464/system.zip -O system.zip
-          wget -q https://storage.googleapis.com/bucket65464/vendor.zip -O vendor.zip
+          wget -q https://sourceforge.net/projects/waydroid/files/images/system/lineage/waydroid_x86_64/lineage-18.1-20231209-GAPPS-waydroid_x86_64-system.zip/download -O system.zip
+          wget -q https://sourceforge.net/projects/waydroid/files/images/vendor/waydroid_x86_64/lineage-18.1-20231209-MAINLINE-waydroid_x86_64-vendor.zip/download -O vendor.zip
           7z x system.zip -o${{ matrix.arch }}/
           7z x vendor.zip -o${{ matrix.arch }}/
       - name: Extract GApps and expand images
