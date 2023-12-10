@@ -1,6 +1,6 @@
 # Magisk Delta on Waydroid - build prerooted images!
 
-![installedmagisk](https://https://storage.googleapis.com/bucket65464/installedmagisk.png)
+![installedmagisk](https://storage.googleapis.com/bucket65464/installedmagisk.png)
 ![magiskmodules](https://storage.googleapis.com/bucket65464/magiskmodules.png)
 
 **Follow [installation](#installation-guide) to init modified images.**
