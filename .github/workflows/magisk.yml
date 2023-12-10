@@ -235,6 +235,8 @@ jobs:
               magisk_apk = "https://raw.githubusercontent.com/topjohnwu/magisk-files/canary/app-debug.apk"
           if magisk_apk == "delta":
               magisk_apk = "https://huskydg.github.io/magisk-files/app-release.apk"
+          if magisk_apk == "stable" or magisk_apk == "beta":
+              magisk_apk = json.loads(requests.get(f"https://github.com/topjohnwu/magisk-files/raw/master/{magisk_apk}.json").content)['magisk']['link']
           
 
           out_file = "magisk.zip"
