@@ -58,7 +58,7 @@ sudo rm -rf /etc/waydroid-extra/images/*
 1. Fork this repo and go to the **Action** tab.
 2. In the left sidebar, click the **Modify Waydroid** workflow.
 3. Above the list of workflow runs, select **Run workflow**
-4. Select Magisk version and gapps version and the selecz **Run workflow**
+4. Select Magisk version and gapps version and the select **Run workflow**
 5. Wait for the action to complete and download the artifact
 6. Unzip the artifact
     - The size shown in the webpage is uncompressed size and the zip you download will be compressed. So the size of the zip will be much less than the size shown in the webpage.
