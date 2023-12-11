@@ -441,110 +441,7 @@ jobs:
           done
 
           echo -e "Integrate Magisk done\n"
-      - name: Remove FOSS Apps
-        run: |
-          sudo rm -rf system/system/app/com.google.android.gsf
-          sudo rm -rf system/system/app/com.aurora.adroid
-          sudo rm -rf system/system/app/com.aurora.store
-          sudo rm -rf system/system/app/com.etesync.syncadapter
-          sudo rm -rf system/system/app/is.xyz.mpv
-          sudo rm -rf system/system/app/me.jfenn.alarmio
-          sudo rm -rf system/system/app/org.microg.gms.droidguard
-          sudo rm -rf system/system/app/org.microg.nlp.backend.ichnaea
-          sudo rm -rf system/system/app/org.microg.nlp.backend.nominatim
-          sudo rm -rf system/system/app/org.schabi.newpipe
-          sudo rm -rf system/system/app/ws.xsoh.etar
-          sudo rm -rf system/system/priv-app/AuroraServices_v1.1.1
-          sudo rm -rf system/system/priv-app/com.google.android.gms
-          sudo rm -rf system/system/priv-app/com.android.vending
-          sudo rm -rf system/system/product/app/Etar
-          sudo rm -rf system/system/product/priv-app/Contacts
-          sudo rm -rf system/system/product/app/ExactCalculator
-          sudo rm -rf system/system/product/priv-app/Eleven
-          sudo rm -rf system/system/app/com.simplemobiletools.gallery.pro
-          sudo rm -rf system/system/app/NotePad
-          sudo rm -rf system/system/app/org.bromite.bromite
-          sudo rm -rf system/system/app/com.google.android.webview
-          sudo rm -rf system/system/app/com.android.webview
-          #sudo mv system/system/xbin/su system/system/xbin/suold
-          sudo ls system/system/xbin
-          wget -qO- "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/archive/$GITHUB_REF.tar.gz" | sudo tar --wildcards -zxvf- --strip-component=2 '*/${{ matrix.arch }}/system/*'
-          sudo find system/system/priv-app -type d -exec chmod 0755 {} \;
-          sudo find system/system/priv-app -type f -exec chmod 0644 {} \;
-          sudo find system/system/priv-app -exec chcon --reference=system/system/priv-app {} \;
-      - name: Fix GApps prop
-        if: ${{ matrix.gapps_variant != 'none' && matrix.gapps_variant != '' }}
-        shell: sudo python {0}
-        run: |
-          from __future__ import annotations
-          from io import TextIOWrapper
-          from os import system
-          from typing import OrderedDict
-
-
-          class Prop(OrderedDict):
-              def __init__(self, file: TextIOWrapper) -> None:
-                  super().__init__()
-                  for i, line in enumerate(file.read().splitlines(False)):
-                      if '=' in line:
-                          k, v = line.split('=', 2)
-                          self[k] = v
-                      else:
-                          self[f".{i}"] = line
-
-              def __str__(self) -> str:
-                  return '\n'.join([v if k.startswith('.') else f"{k}={v}" for k, v in self.items()])
-
-              def __iadd__(self, other: str) -> Prop:
-                  self[f".{len(self)}"] = other
-                  return self
-
-
-          new_props = {
-              ("product", "brand"): "google",
-              ("product", "manufacturer"): "Google",
-              ("build", "product"): "redfin",
-              ("product", "name"): "redfin",
-              ("product", "device"): "redfin",
-              ("product", "model"): "Pixel 5",
-              ("build", "flavor"): "redfin-user"
-          }
-
-
-          def description(sec: str, p: Prop) -> str:
-              return f"{p[f'ro.{sec}.build.flavor']} {p[f'ro.{sec}.build.version.release_or_codename']} {p[f'ro.{sec}.build.id']} {p[f'ro.{sec}.build.version.incremental']} {p[f'ro.{sec}.build.tags']}"
-
-
-          def fingerprint(sec: str, p: Prop) -> str:
-              return f"""{p[f"ro.product.{sec}.brand"]}/{p[f"ro.product.{sec}.name"]}/{p[f"ro.product.{sec}.device"]}:{p[f"ro.{sec}.build.version.release"]}/{p[f"ro.{sec}.build.id"]}/{p[f"ro.{sec}.build.version.incremental"]}:{p[f"ro.{sec}.build.type"]}/{p[f"ro.{sec}.build.tags"]}"""
-
-
-          def fix_prop(sec, prop):
-              print(f"fixing {prop}", flush=True)
-              with open(prop, 'r') as f:
-                  p = Prop(f)
-
-              p += "# extra prop added by MagiskOnWSA"
-
-              for k, v in new_props.items():
-                  p[f"ro.{k[0]}.{k[1]}"] = v
-                  
-                  if k[0] == "build":
-                      p[f"ro.{sec}.{k[0]}.{k[1]}"] = v
-                  elif k[0] == "product":
-                      p[f"ro.{k[0]}.{sec}.{k[1]}"] = v
-
-              p["ro.build.description"] = description(sec, p)
-              p[f"ro.build.fingerprint"] = fingerprint(sec, p)
-              p[f"ro.{sec}.build.description"] = description(sec, p)
-              p[f"ro.{sec}.build.fingerprint"] = fingerprint(sec, p)
-              p[f"ro.bootimage.build.fingerprint"] = fingerprint(sec, p)
-
-              with open(prop, 'w') as f:
-                  f.write(str(p))
-
-          for sec, prop in {"system": "system/system/build.prop", "product": "system/product/build.prop", "system_ext": "system/system_ext/build.prop", "vendor": "system/vendor/build.prop", "odm": "system/vendor/odm/etc/build.prop"}.items():
-              fix_prop(sec, prop)
+     
       - name: Umount images
         run: |
           sudo umount system/vendor
@@ -557,12 +454,12 @@ jobs:
           sudo umount system
           sudo umount userdata
           qemu-img convert -o subformat=dynamic -f raw -O vhdx userdata.img ${{ matrix.arch }}/userdata.vhdx
-      - name: Shrink images
-        run: |
-          e2fsck -yf ${{ matrix.arch }}/system.img
-          resize2fs -M ${{ matrix.arch }}/system.img
-          e2fsck -yf ${{ matrix.arch }}/vendor.img
-          resize2fs -M ${{ matrix.arch }}/vendor.img
+      #- name: Shrink images
+       # run: |
+        #  e2fsck -yf ${{ matrix.arch }}/system.img
+         # resize2fs -M ${{ matrix.arch }}/system.img
+         # e2fsck -yf ${{ matrix.arch }}/vendor.img
+         # resize2fs -M ${{ matrix.arch }}/vendor.img
       - name: Remove signature and add scripts
         run: |
           rm -rf ${{ matrix.arch }}/product.img
