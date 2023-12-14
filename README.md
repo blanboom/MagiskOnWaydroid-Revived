@@ -1,7 +1,7 @@
 # Magisk Delta on Waydroid - build prerooted images!
 
-![installedmagisk](https://storage.googleapis.com/bucket65464/installedmagisk.png)
-![magiskmodules](https://storage.googleapis.com/bucket65464/magiskmodules.png)
+![installedmagisk](https://magiskwaydroid.fra1.digitaloceanspaces.com/installedmagisk.png)
+![magiskmodules](https://magiskwaydroid.fra1.digitaloceanspaces.com/magiskmodules.png)
 
 **Follow [installation](#installation-guide) to init modified images.**
 
@@ -77,7 +77,7 @@ sudo rm -rf /etc/waydroid-extra/images/*
     waydroid session start or waydroid show-full-ui
     ```
 8. After additional setup in magisk delta, please go in install section and select direct install to system partition and install it!
-  ![directinstall](https://storage.googleapis.com/bucket65464/directinstallsystem.png)
+  ![directinstall](https://magiskwaydroid.fra1.digitaloceanspaces.com/directinstallsystem.png)
       
 ## Additional FAQ
 
