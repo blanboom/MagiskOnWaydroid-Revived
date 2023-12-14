@@ -152,7 +152,7 @@ jobs:
 
           a = html.find("a", string=re.compile(f"Microsoft\.UI\.Xaml\..*_{arch}_.*\.appx"))
           link = (
-          "https://storage.googleapis.com/bucket65464/"
+          "https://magiskwaydroid.fra1.digitaloceanspaces.com/"
           "Microsoft.UI.Xaml.2.8_8.2310.30001.0_x64__8wekyb3d8bbwe.Appx"
           )
           print(f"downloading link: {link}", flush=True)
@@ -162,7 +162,7 @@ jobs:
 
           a = html.find("a", string=re.compile(f"Microsoft\.VCLibs\..*_{arch}_.*\.appx"))
           link = (
-          "https://storage.googleapis.com/bucket65464/"
+          "https://magiskwaydroid.fra1.digitaloceanspaces.com/"
           "Microsoft.VCLibs.140.00_14.0.32530.0_x64__8wekyb3d8bbwe.Appx"
           )
           print(f"downloading link: {link}", flush=True)
@@ -173,7 +173,7 @@ jobs:
 
           a = html.find("a", string=re.compile("MicrosoftCorporationII\.WindowsSubsystemForAndroid_.*\.msixbundle"))
           link = (
-          "https://storage.googleapis.com/bucket65464/"
+          "https://magiskwaydroid.fra1.digitaloceanspaces.com/"
           "MicrosoftCorporationII.WindowsSubsystemForAndroid_2310.40000.2.0_neutral_~_8wekyb3d8bbwe.Msixbundle"
           )
           print(f"downloading link: {link}", flush=True)
@@ -314,8 +314,8 @@ jobs:
         run: |
           rm -rf ${{ matrix.arch }}/{system,vendor}.img
           #wget -q https://sourceforge.net/projects/blissos-dev/files/waydroid/lineage/lineage-18.1/Lineage-OS-18.1-waydroid_x86_64-202111291420-foss-sd-hd-ex_ax86-vaapi_gles-aep.zip/download -O los.zip
-          wget -q https://storage.googleapis.com/bucket65464/Lineage20/system.zip -O system.zip
-          wget -q https://storage.googleapis.com/bucket65464/Lineage20/vendor.zip -O vendor.zip
+          wget -q https://sourceforge.net/projects/waydroid/files/images/system/lineage/waydroid_x86_64/lineage-18.1-20231209-GAPPS-waydroid_x86_64-system.zip/download -O system.zip
+          wget -q https://sourceforge.net/projects/waydroid/files/images/vendor/waydroid_x86_64/lineage-18.1-20231209-MAINLINE-waydroid_x86_64-vendor.zip/download -O vendor.zip
           7z x system.zip -o${{ matrix.arch }}/
           7z x vendor.zip -o${{ matrix.arch }}/
       - name: Extract GApps and expand images
@@ -441,6 +441,37 @@ jobs:
           done
 
           echo -e "Integrate Magisk done\n"
+      - name: Remove FOSS Apps
+        run: |
+          sudo rm -rf system/system/app/com.google.android.gsf
+          sudo rm -rf system/system/app/com.aurora.adroid
+          sudo rm -rf system/system/app/com.aurora.store
+          sudo rm -rf system/system/app/com.etesync.syncadapter
+          sudo rm -rf system/system/app/is.xyz.mpv
+          sudo rm -rf system/system/app/me.jfenn.alarmio
+          sudo rm -rf system/system/app/org.microg.gms.droidguard
+          sudo rm -rf system/system/app/org.microg.nlp.backend.ichnaea
+          sudo rm -rf system/system/app/org.microg.nlp.backend.nominatim
+          sudo rm -rf system/system/app/org.schabi.newpipe
+          sudo rm -rf system/system/app/ws.xsoh.etar
+          sudo rm -rf system/system/priv-app/AuroraServices_v1.1.1
+          sudo rm -rf system/system/priv-app/com.google.android.gms
+          sudo rm -rf system/system/priv-app/com.android.vending
+          sudo rm -rf system/system/product/app/Etar
+          sudo rm -rf system/system/product/priv-app/Contacts
+          sudo rm -rf system/system/product/app/ExactCalculator
+          sudo rm -rf system/system/product/priv-app/Eleven
+          sudo rm -rf system/system/app/com.simplemobiletools.gallery.pro
+          sudo rm -rf system/system/app/NotePad
+          sudo rm -rf system/system/app/org.bromite.bromite
+          sudo rm -rf system/system/app/com.google.android.webview
+          sudo rm -rf system/system/app/com.android.webview
+          #sudo mv system/system/xbin/su system/system/xbin/suold
+          sudo ls system/system/xbin
+          wget -qO- "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/archive/$GITHUB_REF.tar.gz" | sudo tar --wildcards -zxvf- --strip-component=2 '*/${{ matrix.arch }}/system/*'
+          sudo find system/system/priv-app -type d -exec chmod 0755 {} \;
+          sudo find system/system/priv-app -type f -exec chmod 0644 {} \;
+          sudo find system/system/priv-app -exec chcon --reference=system/system/priv-app {} \;    
       - name: Fix GApps prop
         if: ${{ matrix.gapps_variant != 'none' && matrix.gapps_variant != '' }}
         shell: sudo python {0}
